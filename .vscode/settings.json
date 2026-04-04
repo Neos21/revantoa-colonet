@@ -1,0 +1,15 @@
+{
+  // 検索除外設定
+  "search.exclude": {
+    "**/.qodo": true,
+    "**/.react-router": true,
+    "**/.wrangler": true,
+    "**/build": true,
+    "**/node_modules": true,
+    "**/worker-configuration.d.ts": true
+  },
+  
+  // Headwind : Tailwind CSS クラス名の自動整列・調整
+  "headwind.runOnSave": true,
+  "headwind.removeDuplicates": true
+}

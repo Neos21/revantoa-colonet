@@ -1,0 +1,54 @@
+// 2025-09-22 時点で `wrangler.jsonc` が推奨されている https://developers.cloudflare.com/workers/wrangler/configuration/
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // `https://【name】.【サブドメイン】.workers.dev` でデプロイされるようになる
+  "name": "colonet",
+  // 指定できる日付は https://developers.cloudflare.com/workers/configuration/compatibility-flags/ に記載あり・2025-09-22 時点で選べる最新版にしておいた
+  "compatibility_date": "2025-09-17",
+  // `$ wrangler whoami` で確認できる Account ID
+  "account_id": "0d0188bb032f7edfb344a07f0afad3ee",
+  // Worker のメインファイルを指定する
+  "main": "./server/index.ts",
+  // 静的資産の取り扱いに関する定義 https://developers.cloudflare.com/workers/static-assets/binding/
+  "assets": {
+    // ビルド後のクライアント資材 (`index.html` など) があるディレクトリを指定する
+    "directory": "./build/client",
+    // 見つからないパスは `index.html` を返す `single-page-application` モードを指定する・Cloudflare Workers デプロイ後は Hono API パスにブラウザからの直アクセスができない仕様 https://developers.cloudflare.com/workers/static-assets/routing/single-page-application/
+    "not_found_handling": "single-page-application"
+  },
+  // シークレットに近いが中身が見えても良い環境変数
+  "vars": {
+    "IS_PRODUCTION": "true"
+  },
+  // D1 SQLite データベースをバインディングする
+  "d1_databases": [
+    {
+      // `context.env.DB` でバインディングする
+      "binding": "DB",
+      "database_name": "colonet",
+      "database_id": "ef96f8bb-cea4-48df-a155-8b7fed28d8bc"
+    }
+  ],
+  // プレビュー URL を無効にする
+  "preview_urls": false,
+  // Workers Logs を有効にする
+  "observability": {
+    "enabled": true,
+    // 以降はデフォルト設定を管理画面で確認した時に表示されたモノ・ローカルで同じ設定を同期させるために書いておく
+    "logs": {
+      "enabled": true,          // 有効にする
+      "head_sampling_rate": 1,  // 100% の割合で Worker 呼び出しを記録する
+      "invocation_logs": true,  // 起動ログを含める
+      "persist": true           // ログを Workers ダッシュボードに保存する
+    },
+    "traces": {
+      "enabled": true,          // 有効にする
+      "head_sampling_rate": 1,  // 100% の割合で Worker 呼び出しを記録する
+      "persist": true           // Workers ダッシュボードにトレースを保存する
+    }
+  },
+  // プレースメントをスマート設定にする・Workers の実行場所を効率よく変えてくれる
+  "placement": {
+    "mode": "smart"
+  }
+}

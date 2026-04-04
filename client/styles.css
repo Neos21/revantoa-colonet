@@ -1,0 +1,99 @@
+/* Tailwind CSS を使用する */
+@import "tailwindcss";
+/* daisyUI を使用する */
+@plugin "daisyui" {
+  exclude: properties;  /* `@property --radialprogress Unknown at rule: @property` のワーニングを消すための指定 https://github.com/saadeghi/daisyui/issues/3882 */
+};
+/* プライマリカラーを調整する https://daisyui.com/theme-generator/ */
+@plugin "daisyui/theme" {
+  name: "light";
+  --color-primary        : oklch(68% 0.169 237.323);
+  --color-primary-content: oklch(97% 0.013 236.62);
+}
+@plugin "daisyui/theme" {
+  name: "dark";
+  --color-primary        : oklch(68% 0.169 237.323);
+  --color-primary-content: oklch(97% 0.013 236.62);
+}
+
+/* Tailwind CSS でタークテーマを使用するための記述 (`html.dark` と daisyUI 用に `html[data-theme="dark"]` にも対応する) https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually */
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  /* ウェブフォントとして読み込んでおいた M Plus 1 Code をデフォルトに追加する */
+  --font-sans: "M PLUS 1 Code", ui-sans-serif, system-ui,                                                                 sans-serif, "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-mono: "M PLUS 1 Code", ui-monospace , SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace , "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/* `@layer base` 内に入れると負けるので入れないでおく */
+html {
+  @apply h-full break-all cursor-default;
+  
+  scrollbar-gutter: stable;  /* スクロールバーが表示されない時も余白を作る・`overflow-y: scroll` だとモーダルウィンドウ表示時に背景がスクロールしてしまうため */
+  text-decoration-skip-ink: none;  /* 下線を途切れさせない */
+}
+
+body {
+  @apply h-full;  /* `footer` に `position: sticky; top: 100vh;` を指定した場合にコンテンツが少ない時もフッターが画面下部に張り付くようにするため、`html`・`body` 要素は `height: 100%` にしておく */
+}
+
+/* ファーストビューだけフェード表示にして、ウェブフォントのスワップ表示の違和感を減らしたりするためのパーツ */
+.first-view-backdrop {
+  /* 2つの秒数は先が `animation-duration` (アニメーションの時間)・後が `animation-delay` (開始の遅延) */
+  animation: delayed-first-view-animation .2s .4s ease forwards;
+  position: fixed;
+  inset: 0;
+  z-index: 9999999999;
+  pointer-events: none;  /* コレにより前景に本要素が重なっていても透過される  */
+  /* 以下は初期状態 */
+  background: var(--page-scroll-bg, var(--root-bg, var(--color-base-100)));  /* `:root` に指定されているのと同じ背景色でベタ塗りしている状態 (ダークモード時も対応) */
+  backdrop-filter: blur(20px);  /* ブラー状態 */
+  /* 元々は親要素に `filter: blur()` をかけていたが、コレをやると子要素の `height: 100%` の値が狂ってしまいモーダルの表示位置がズレたので `backdrop-filter` の要素を重ねることにした */
+}
+  @keyframes delayed-first-view-animation {
+    from {
+      background: var(--page-scroll-bg, var(--root-bg, var(--color-base-100)));
+      backdrop-filter: blur(20px);
+    }
+    to {
+      background: transparent;
+      backdrop-filter: blur(0);
+    }
+  }
+
+/* 初期表示時にフェード表示するパーツ */
+.fade-first-view {
+  animation: fade-first-view-animation .15s ease forwards;
+  opacity: 0;
+}
+  @keyframes fade-first-view-animation {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+/* `.fade-first-view` をさらに遅らせたい場合に併用する */
+.animation-delay {
+  animation-delay: .3s;
+  animation-duration: .3s;
+}
+/* `.fade-first-view` をさらにさらに遅らせたい場合に併用する・フェード表示もゆっくりにする */
+.more-animation-delay {
+  animation-delay: 1s;
+  animation-duration: 1s;
+}
+
+/* Turnstile の描画時に下部に余白ができないようにする https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/widget-configurations/#widget-sizes */
+#cf-turnstile {
+  max-height: 65px;
+}
+
+.link {
+  @apply text-primary no-underline hover:underline;
+}
+
+.link-line {
+  @apply text-primary underline hover:no-underline;
+}

@@ -1,0 +1,22 @@
+.DS_Store
+Thumbs.db
+
+# 環境変数 (シークレット) をローカルで設定するためのファイル
+.dev.vars
+# `$ wrangler d1 execute --file` で指定する用の SQL ファイル
+schema.sql
+# 差分ビルドを記録するファイル
+tsconfig.tsbuildinfo
+
+# Qodo
+.qodo/
+# React Router v7 の定義ファイルが出力される
+.react-router/
+# Wrangler の設定ファイルが出力される
+.wrangler/
+# ビルドしたファイルが出力される
+build/
+# npm
+node_modules/
+# jscpd のレポート
+report/
