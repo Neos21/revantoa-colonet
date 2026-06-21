@@ -143,6 +143,12 @@ export default function App(): ReactElement {
         </main>
         <footer className="text-center py-14 sticky top-[100vh]">
           <Link to={pagePaths.route} className="text-base-content/70 hover:text-base-content/50">ころねっと</Link>
+          <span className="mx-1 text-base-content/50">|</span>
+          <a href="https://key-glyph.revantoa.workers.dev" target="_blank" className="text-base-content/70 hover:text-base-content/50">KeyGlyph</a>
+          <span className="mx-1 text-base-content/50">|</span>
+          <a href="https://cipher-feed.revantoa.workers.dev" target="_blank" className="text-base-content/70 hover:text-base-content/50">CipherFeed</a>
+          <span className="mx-1 text-base-content/50">|</span>
+          <a href="https://fight-for-your-right.revantoa.workers.dev" target="_blank" className="text-base-content/70 hover:text-base-content/50">これやれ</a>
         </footer>
       </div>
     </>
