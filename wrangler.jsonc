@@ -26,7 +26,7 @@
       // `context.env.DB` でバインディングする
       "binding": "DB",
       "database_name": "colonet",
-      "database_id": "ef96f8bb-cea4-48df-a155-8b7fed28d8bc"
+      "database_id": "【TODO】"
     }
   ],
   // プレビュー URL を無効にする

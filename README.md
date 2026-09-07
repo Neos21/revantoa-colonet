@@ -1,6 +1,6 @@
 # Colonet (v2)
 
-<https://colonet.revantoa.workers.dev>
+`https://colonet.revantoa.workers.dev`
 
 
 ## コンセプト
